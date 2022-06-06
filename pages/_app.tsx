@@ -2,6 +2,7 @@ import type { AppProps } from 'next/app'
 import { createGlobalStyle, DefaultTheme, GlobalStyleComponent } from 'styled-components';
 import './../styles/font.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
+import React from 'react';
 
 const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 	*{
@@ -59,6 +60,11 @@ const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 `
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+	React.useEffect(() => {
+		window.onmousedown = () => false;
+	}, [])
+
 	return <>
 		<GlobalStyles />
 		<Component {...pageProps} />

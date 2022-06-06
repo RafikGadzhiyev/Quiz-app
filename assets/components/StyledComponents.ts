@@ -1,4 +1,5 @@
 import styled, { StyledComponent } from "styled-components";
+import { ForwardRefComponent, HTMLMotionProps, motion } from 'framer-motion';
 
 
 export const StyledQuizContainer: StyledComponent<'div', any, {}> = styled.div`
@@ -19,7 +20,6 @@ export const StyledQuizHeader: StyledComponent<'header', any, {}> = styled.heade
 export const StyledQuizMainContainer: StyledComponent<'main', any, {}> = styled.main`
     background-color: #fff;
 	border-radius: 20px;
-	padding: 3rem 1rem 2rem;
 	color: #6066D0CC;
 	min-height: inherit;
 	height: 100%;
@@ -39,7 +39,10 @@ export const ImageContainer: StyledComponent<'div', any, {}> = styled.div`
 `
 
 export const StyledQuizContentContainer: StyledComponent<'div', any, {}> = styled.div`
+	padding: 3rem 1rem 2rem;
 	padding-inline: 1rem;
+	overflow: hidden;
+
 `
 
 export const QuizQuestion: StyledComponent<'span', any, {}> = styled.span`
@@ -55,7 +58,7 @@ export const AnswersList: StyledComponent<'ul', any, {}> = styled.ul`
 	margin-top: 1rem;
 `
 
-export const Answer: StyledComponent<'li', any, {}> = styled.li`
+export const Answer: StyledComponent<ForwardRefComponent<HTMLLIElement, HTMLMotionProps<'li'>>, any, {}> = styled(motion.li)`
 	width: 100%;
 
 	&:not(:last-of-type){
@@ -137,4 +140,51 @@ export const NextButton: StyledComponent<"button", any, {}> = styled.button`
 		display: none
 	}
 
+`
+
+export const StyledResultContainer: StyledComponent<'div', any, {}> = styled.div`
+	
+`;
+
+export const StyledResultTitle: StyledComponent<'h2', any, {}> = styled.h2`
+	text-transform: capitalize;
+	color: #1D355D;
+	font-size: 2.5rem;
+`
+
+export const StyledScoreInfo: StyledComponent<'span', any, {}> = styled.span`
+	font-family: "Poppins Regular";
+	color: #1D355D;
+`
+
+export const StyledScoreNumber: StyledComponent<'span', any, {}> = styled.span`
+	color: #6fcf97;
+	font-family: "Poppins Medium";
+	font-size: 1.75rem;
+`
+
+export const StyledAgainButton: StyledComponent<'button', any, {}> = styled.button`
+	border-radius: 10px;
+	border: 1.5px solid #1D355D;
+	color: #1D355D;
+	padding: .5rem 2.5rem;
+	font-family: "Poppins Medium";
+	transition: 200ms ease-in;
+	text-align: center;
+	margin: 0 auto;
+	display: block;
+
+	&:hover{
+		background-color: #1d355d;
+		color: #fff;
+	}
+
+`
+
+export const StyledScoreWrapper: StyledComponent<'div', any, {}> = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	margin-bottom: 1.25rem;
 `
