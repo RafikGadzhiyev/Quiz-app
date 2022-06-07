@@ -10,7 +10,19 @@ export const StyledQuizContainer: StyledComponent<'div', any, {}> = styled.div`
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	transform:translate(-50%, -50%)
+	transform:translate(-50%, -50%);
+
+	@media screen and (max-width: 650px){
+		width: 90%;
+		margin: 0 auto;
+	}
+
+	@media screen and (max-width: 400px){
+		width: 100%;
+		margin: 0;
+		min-height: fit-content;
+	}
+
 `
 
 export const StyledQuizHeader: StyledComponent<'header', any, {}> = styled.header`
@@ -30,18 +42,33 @@ export const StyledQuizTitle: StyledComponent<'h1', any, {}> = styled.h1`
 	text-transform: uppercase;
 	color: white;
 	font-size: 2rem;
+
+	@media screen and (max-width: 400px){
+		font-size: 1.8rem
+	}
+
+
 `
 
 export const ImageContainer: StyledComponent<'div', any, {}> = styled.div`
 	position: absolute;
 	top: -10px;
 	right:0;
+
+	@media screen and (max-width: 550px){
+		display:none;
+	}
+
 `
 
 export const StyledQuizContentContainer: StyledComponent<'div', any, {}> = styled.div`
 	padding: 3rem 1rem 2rem;
 	padding-inline: 1rem;
 	overflow: hidden;
+
+	@media screen and (max-width: 550px){
+		padding-top: 1.5rem;
+	}
 
 `
 
@@ -52,6 +79,15 @@ export const QuizQuestion: StyledComponent<'span', any, {}> = styled.span`
 	align-items: center;
 	gap: .3rem;
 `
+
+export const QuizQuestionContent: StyledComponent<'span', any, {}> = styled.span`	
+	flex-shrink: 2;
+
+	@media screen and ( max-width: 400px){
+		font-size: .8rem;
+	}
+
+`;
 
 export const AnswersList: StyledComponent<'ul', any, {}> = styled.ul`
 	list-style: none;
@@ -64,6 +100,11 @@ export const Answer: StyledComponent<ForwardRefComponent<HTMLLIElement, HTMLMoti
 	&:not(:last-of-type){
 		margin-bottom: 1rem;
 	}
+
+	@media screen and (max-width: 400px){
+		font-size: .7rem;
+	}
+
 `
 
 export const Answerbutton: StyledComponent<'button', any, {}> = styled.button`

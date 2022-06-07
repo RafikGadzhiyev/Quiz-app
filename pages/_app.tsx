@@ -13,8 +13,9 @@ const GlobalStyles: GlobalStyleComponent<{}, DefaultTheme> = createGlobalStyle`
 
 	html,
 	body{
-		width: 100%;
+		width: 100vw;
 		min-height: 100vh;
+		height: auto;
 		box-sizing: border-box;
 		font-size: 20px;
 		font-family: "Poppins Medium";

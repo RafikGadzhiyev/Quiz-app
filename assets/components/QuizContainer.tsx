@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { $countries, __INIT__ } from './../effector/store';
 import { useStore } from 'effector-react'
-import { ImageContainer, QuizQuestion, StyledQuizContentContainer, StyledQuizMainContainer, NextButton } from "./StyledComponents"
+import { ImageContainer, QuizQuestion, StyledQuizContentContainer, StyledQuizMainContainer, NextButton, QuizQuestionContent } from "./StyledComponents"
 import ApplicationStaticIcon from './../icons/undraw_adventure_4hum 1.svg';
 import { CreateQuestion } from './../methods/functions';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -83,9 +83,11 @@ export const QuizMainContainer: React.FC = () => {
                     !!questions.length && questionIndex < questions.length &&
                     <StyledQuizContentContainer>
                         <QuizQuestion>
-                            {
-                                questions[questionIndex].question
-                            }
+                            <QuizQuestionContent>
+                                {
+                                    questions[questionIndex].question
+                                }
+                            </QuizQuestionContent>
                             {
                                 questions[questionIndex].type === "NAME" &&
                                 <Image
@@ -93,7 +95,6 @@ export const QuizMainContainer: React.FC = () => {
                                     alt='Country flag icon'
                                     width='70'
                                     height='40'
-
                                 />
                             }
                         </QuizQuestion>

@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 	return (
 		<div>
 			<Head>
-				<title>Create Next App</title>
+				<title>Quiz application</title>
 				<meta name="description" content="This is quiz app!" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
