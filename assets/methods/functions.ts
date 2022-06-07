@@ -2,7 +2,7 @@ import { shuffle } from 'lodash';
 import type { IAnswers, ICountry, IQuestion } from '../types';
 
 export const CreateQuestion = (countries: Array<ICountry>) => {
-	// Add this question type later -  "BORDERED_COUNTRY"
+	// Will add this question type later -  "BORDERED_COUNTRY"
 	const TYPES = ["AREA", "CAPITAL", "INDEPENDENCE", "NAME", "POPULATION", "REGION"];
 	let type = TYPES[Math.floor(Math.random() * TYPES.length)];
 	let questionData: IQuestion = {

@@ -2,11 +2,17 @@ import { QuizMainContainer } from "./QuizContainer"
 import { QuizHeader } from "./QuizHeaderComponent"
 import { StyledQuizContainer } from "./StyledComponents"
 
-export const QuizContainer: React.FC = () => {
+interface IProps {
+    isLoading: boolean
+}
+
+export const QuizContainer: React.FC<IProps> = ({ isLoading }) => {
     return (
         <StyledQuizContainer>
             <QuizHeader />
-            <QuizMainContainer />
+            <QuizMainContainer
+                isLoading={isLoading}
+            />
         </StyledQuizContainer>
     )
 }

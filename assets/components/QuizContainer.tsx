@@ -2,7 +2,14 @@ import React from 'react';
 import Image from 'next/image';
 import { $countries, __INIT__ } from './../effector/store';
 import { useStore } from 'effector-react'
-import { ImageContainer, QuizQuestion, StyledQuizContentContainer, StyledQuizMainContainer, NextButton, QuizQuestionContent } from "./StyledComponents"
+import {
+    ImageContainer,
+    QuizQuestion,
+    StyledQuizContentContainer,
+    StyledQuizMainContainer,
+    NextButton,
+    QuizQuestionContent
+} from "./StyledComponents"
 import ApplicationStaticIcon from './../icons/undraw_adventure_4hum 1.svg';
 import { CreateQuestion } from './../methods/functions';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,35 +19,40 @@ import { AnimatePresence } from 'framer-motion';
 import type { ICountry, IQuestion } from '../types';
 import { Answers } from './AnswersComponent';
 
-export const QuizMainContainer: React.FC = () => {
+interface IProps {
+    isLoading: boolean
+}
+
+export const QuizMainContainer: React.FC<IProps> = ({ isLoading }) => {
     const score: React.MutableRefObject<number> = React.useRef<number>(0);
     const once: React.MutableRefObject<number> = React.useRef<number>(1);
-
-    const [questions, setQuestions]: [Array<IQuestion>, React.Dispatch<React.SetStateAction<Array<IQuestion>>>] = React.useState<Array<IQuestion>>([]);
-    const [questionIndex, setQuestionIndex]: [number, React.Dispatch<React.SetStateAction<number>>] = React.useState<number>(0);
-
+    const end: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
     const NextButtonRef: React.MutableRefObject<HTMLButtonElement | null> = React.useRef(null);
 
     const countries: Array<ICountry> = useStore($countries);
+    const [question, setQuestion]: [IQuestion | null, React.Dispatch<React.SetStateAction<IQuestion | null>>] = React.useState<IQuestion | null>(null);
 
+    const generate = React.useCallback(() => {
+        let generatedQuestions: IQuestion | null = CreateQuestion($countries.getState());
+        setQuestion(() => generatedQuestions);
+    }, []);
 
     const nextQuestion = React.useCallback(() => {
-        setQuestionIndex(prev => prev + 1);
+        if (end.current) {
+            switchToTheEndOfGame();
+            return;
+        }
+        generate();
         if (NextButtonRef.current) {
             NextButtonRef.current.classList.add('disabled');
         }
-    }, [])
+    }, [generate]);
 
-    const generate = React.useCallback(() => {
-        const generatedQuestions: Array<IQuestion> = [];
-        for (let i = 0; i < 20; ++i) {
-            generatedQuestions.push(CreateQuestion(countries));
-        }
-        setQuestions(() => generatedQuestions);
-        setQuestionIndex(() => 0);
-        score.current = 0;
-    }, [countries]);
-
+    const switchToTheEndOfGame = () => {
+        setQuestion(() => null);
+        end.current = false;
+        return;
+    }
 
     React.useEffect(() => {
         if (countries.length && once.current) {
@@ -53,7 +65,7 @@ export const QuizMainContainer: React.FC = () => {
         <AnimatePresence>
             <StyledQuizMainContainer>
                 {
-                    questionIndex < questions.length &&
+                    question &&
                     <ImageContainer>
                         <Image
                             src={ApplicationStaticIcon}
@@ -62,14 +74,14 @@ export const QuizMainContainer: React.FC = () => {
                     </ImageContainer>
                 }
                 {
-                    questionIndex >= questions.length && !!questions.length &&
+                    !question && !isLoading &&
                     <ResultContainer
                         generate={generate}
-                        score={score.current}
+                        score={score}
                     />
                 }
                 {
-                    !questions.length &&
+                    isLoading &&
                     <CircularProgress
                         sx={{
                             position: "absolute",
@@ -80,18 +92,18 @@ export const QuizMainContainer: React.FC = () => {
                     />
                 }
                 {
-                    !!questions.length && questionIndex < questions.length &&
+                    !!question &&
                     <StyledQuizContentContainer>
                         <QuizQuestion>
                             <QuizQuestionContent>
                                 {
-                                    questions[questionIndex].question
+                                    question.question
                                 }
                             </QuizQuestionContent>
                             {
-                                questions[questionIndex].type === "NAME" &&
+                                question.type === "NAME" &&
                                 <Image
-                                    src={questions[questionIndex].image + ''}
+                                    src={question.image + ''}
                                     alt='Country flag icon'
                                     width='70'
                                     height='40'
@@ -99,10 +111,10 @@ export const QuizMainContainer: React.FC = () => {
                             }
                         </QuizQuestion>
                         <Answers
-                            questions={questions}
-                            questionIndex={questionIndex}
+                            question={question}
                             score={score}
                             NextButtonRef={NextButtonRef}
+                            end={end}
                         />
                         <NextButton
                             as={NextButton}

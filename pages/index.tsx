@@ -7,11 +7,13 @@ import { AnimatePresence } from 'framer-motion'
 import { QuizContainer } from '../assets/components/QuizContainerComponent'
 
 const Home: NextPage = () => {
+	const [isLoading, setIsLoading]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = React.useState<boolean>(false);
 	const once = React.useRef<number>(1);
 	const _INIT_ = useEvent(__INIT__);
 	React.useEffect(() => {
 		if (once.current === 1) {
-			_INIT_();
+			setIsLoading(() => true);
+			_INIT_().then(() => setIsLoading(() => false));
 			once.current--;
 		}
 	}, [])
@@ -24,7 +26,9 @@ const Home: NextPage = () => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<AnimatePresence>
-				<QuizContainer />
+				<QuizContainer
+					isLoading={isLoading}
+				/>
 			</AnimatePresence>
 
 		</div>

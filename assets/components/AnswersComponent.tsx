@@ -4,25 +4,25 @@ import { v4 as uuid4 } from 'uuid'
 import { IQuestion } from '../types';
 
 interface IProps {
-    questions: Array<IQuestion>,
-    questionIndex: number,
+    question: IQuestion,
     score: React.MutableRefObject<number>,
-    NextButtonRef: React.MutableRefObject<HTMLButtonElement | null>
+    NextButtonRef: React.MutableRefObject<HTMLButtonElement | null>,
+    end: React.MutableRefObject<boolean>
 }
 
-export const Answers: React.FC<IProps> = ({ questions, questionIndex, score, NextButtonRef }) => {
+export const Answers: React.FC<IProps> = ({ question, score, NextButtonRef, end }) => {
     const QUESTION_ANSWER_MARKS: React.MutableRefObject<string[]> = React.useRef(['A', 'B', 'C', 'D']);
     const ListRef: React.MutableRefObject<HTMLUListElement | null> = React.useRef(null);
 
     const ButtonsClickhandler = React.useCallback((e: React.SyntheticEvent) => {
-        if (questions[questionIndex].answered) return;
+        if (question.answered) return;
         let element: HTMLElement | HTMLButtonElement | null = e.target as HTMLElement;
         if (element.tagName !== 'BUTTON') {
             element = element.closest('button');
         }
 
         if (element) {
-            if (element.children[1].textContent === questions[questionIndex].correctAnswer + '') {
+            if (element.children[1].textContent === question.correctAnswer + '') {
                 element.classList.add('correct');
                 score.current++;
             }
@@ -36,10 +36,11 @@ export const Answers: React.FC<IProps> = ({ questions, questionIndex, score, Nex
                         if (button && mainElement && mainElement.textContent) {
                             text = mainElement.textContent.trim();
                         }
-                        if (text === questions[questionIndex].correctAnswer + '') {
+                        if (text === question.correctAnswer + '') {
                             button.classList.add('correct');
                         }
                     })
+                    end.current = true;
                     element.classList.add('incorrect');
                 }
 
@@ -47,17 +48,17 @@ export const Answers: React.FC<IProps> = ({ questions, questionIndex, score, Nex
             if (NextButtonRef.current) {
                 NextButtonRef.current.classList.remove('disabled');
             }
-            questions[questionIndex].answered = true;
+            question.answered = true;
 
         }
-    }, [questionIndex, questions, NextButtonRef, score])
+    }, [question, end, NextButtonRef, score])
 
     return <AnswersList
         ref={ListRef}
         as={AnswersList}
     >
         {
-            questions[questionIndex].answers.map((e, i) => <Answer
+            question.answers.map((e, i) => <Answer
                 initial={{
                     x: -500
                 }}
